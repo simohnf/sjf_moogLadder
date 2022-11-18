@@ -62,8 +62,11 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     //==============================================================================
-    std::array < sjf_moogLadder, 2 > m_moog;
-    std::array < sjf_lfo, 2 > m_lfo;
+    const static int nMoog = 2;
+    const static int nLFO = 2;
+    
+    std::array < sjf_moogLadder, nMoog > m_moog;
+    std::array < sjf_lfo, nLFO > m_lfo;
     float m_SR = 44100;
     
     juce::SmoothedValue< float > m_cutOffSmooth, m_resonanceSmooth, m_bassBoostSmooth;
@@ -74,6 +77,7 @@ private:
     std::atomic<float>* cutOffParameter = nullptr;
     std::atomic<float>* resonanceParameter = nullptr;
     std::atomic<float>* bassBoostParameter = nullptr;
+    std::vector < std::atomic<float>* > lfoOnParameters;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessor)
 };

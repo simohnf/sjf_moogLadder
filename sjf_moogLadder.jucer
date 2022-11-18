@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="ruTcFI" name="sjf_moogLadder" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildVST3"
-              pluginManufacturer="sjf">
+              pluginManufacturer="sjf" displaySplashScreen="1">
   <MAINGROUP id="Uw7ZMd" name="sjf_moogLadder">
     <GROUP id="{6CAC79ED-904C-1AA2-DD70-6C6F2F61DC2F}" name="Source">
       <FILE id="r6fcxe" name="PluginProcessor.cpp" compile="1" resource="0"

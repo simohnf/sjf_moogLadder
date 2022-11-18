@@ -29,6 +29,11 @@ Sjf_moogLadderAudioProcessor::Sjf_moogLadderAudioProcessor()
     resonanceParameter = parameters.getRawParameterValue("resonance");
     bassBoostParameter = parameters.getRawParameterValue("bassBoost");
     
+    for ( int i = 0; i < nLFO; i++ )
+    {
+        lfoOnParameters.push_back ( nullptr );
+    }
+    
 }
 
 Sjf_moogLadderAudioProcessor::~Sjf_moogLadderAudioProcessor()
@@ -104,6 +109,11 @@ void Sjf_moogLadderAudioProcessor::prepareToPlay (double sampleRate, int samples
     for ( int i = 0; i < m_moog.size(); i++ )
     {
         m_moog[ i ].setSampleRate( m_SR );
+    }
+    
+    for ( int i = 0; i < m_lfo.size(); i++ )
+    {
+        m_lfo[ i ].setSampleRate( m_SR );
     }
     
     m_cutOffSmooth.reset( m_SR, 0.01f );
@@ -210,11 +220,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout Sjf_moogLadderAudioProcessor
 {
     juce::AudioProcessorValueTreeState::ParameterLayout params;
     
-    juce::NormalisableRange < float > cutOffRange( 20.0f, 5000.0f, 0.001f );
-    cutOffRange.setSkewForCentre( 1000.0f );
+    juce::NormalisableRange < float > cutOffRange( 40.0f, 5000.0f, 0.001f );
+    cutOffRange.setSkewForCentre( 450.0f );
     params.add( std::make_unique<juce::AudioParameterFloat>  ( "cutOff", "CutOff", cutOffRange, 100.0f ) );
     params.add( std::make_unique<juce::AudioParameterFloat>  ( "resonance", "Resonance", 0.0f, 100.0f, 100.0f ) );
     params.add( std::make_unique<juce::AudioParameterFloat>  ( "bassBoost", "BassBoost", 0.0f, 100.0f, 100.0f ) );
+
+    std::vector< std::string > lfoNames { "frequency", "resonance" };
+    std::vector< std::string > LfoNames { "Frequency", "Resonance" };
+    for ( int i = 0; i <  nLFO; i++ )
+    {
+        params.add( std::make_unique<juce::AudioParameterBool>( lfoNames[ i ]+"LfoOn", LfoNames[ i ]+"LfoOn", false ) );
+        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+"Type", LfoNames[ i ]+"Type", 0, 4, 0 ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+"Rate", LfoNames[ i ]+"Rate", 0.0001f, 20.0f, 1.0f ) );
+    }
     
     return params;
 }
