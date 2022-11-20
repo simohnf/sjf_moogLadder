@@ -31,7 +31,16 @@ private:
     sjf_lookAndFeel otherLookAndFeel;
     
     juce::Slider cutOffSlider, resonanceSlider, bassBoostSlider;
+    
+    juce::ToggleButton cutOffLfoToggle, resonanceLFOToggle;
+    juce::ComboBox cutOffLfoType, resonanceLFOType;
+    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoDutySlider, resonanceLFORateSlider, resonanceLfoDepthSlider, resonanceLFODutySlider;
+    
     std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffSliderAttachment, resonanceSliderAttachment, bassBoostSliderAttachment;
 
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLFOToggleAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLFOTypeAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLFORateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLFODutySliderAttachment;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessorEditor) 
 };

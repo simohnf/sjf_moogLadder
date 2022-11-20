@@ -57,6 +57,10 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    std::vector< std::string > lfoNames { "frequency_Lfo_", "resonance_Lfo_" };
+    std::vector< std::string > LfoNames { "Frequency_Lfo_", "Resonance_Lfo_" };
+    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth","TriangleDutyCycle" };
+    
 private:
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
@@ -70,14 +74,15 @@ private:
     float m_SR = 44100;
     
     juce::SmoothedValue< float > m_cutOffSmooth, m_resonanceSmooth, m_bassBoostSmooth;
-    
+    std::array< juce::SmoothedValue< float >, 3 > m_cutOffLfoSmooth, m_resonanceLfoSmooth;
     
     juce::AudioProcessorValueTreeState parameters;
     
     std::atomic<float>* cutOffParameter = nullptr;
     std::atomic<float>* resonanceParameter = nullptr;
     std::atomic<float>* bassBoostParameter = nullptr;
-    std::vector < std::atomic<float>* > lfoOnParameters;
+    std::vector < std::atomic<float>* > cutOffLFOParameters;
+    std::vector < std::atomic<float>* > resonanceLFOParameters;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessor)
 };
