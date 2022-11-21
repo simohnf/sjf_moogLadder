@@ -40,15 +40,15 @@ Sjf_moogLadderAudioProcessorEditor::Sjf_moogLadderAudioProcessorEditor (Sjf_moog
     bassBoostSlider.setSliderStyle( juce::Slider::Rotary );
     
     
-//    juce::ToggleButton cutOffLfoToggle, resonanceLFOToggle;
-//    juce::ComboBox cutOffLfoType, resonanceLFOType;
-//    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoDutySlider, resonanceLFORateSlider, resonanceLfoDepthSlider, resonanceLFODutySlider;
+//    juce::ToggleButton cutOffLfoToggle, resonanceLfoToggle;
+//    juce::ComboBox cutOffLfoType, resonanceLfoType;
+//    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoDutySlider, resonanceLfoRateSlider, resonanceLfoDepthSlider, resonanceLfoDutySlider;
 //
 //    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffSliderAttachment, resonanceSliderAttachment, bassBoostSliderAttachment;
 //
-//    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLFOToggleAttachment;
-//    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLFOTypeAttachment;
-//    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLFORateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLFODutySliderAttachment;
+//    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLfoToggleAttachment;
+//    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLfoTypeAttachment;
+//    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLfoRateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLfoDutySliderAttachment;
     
     addAndMakeVisible( cutOffLfoToggle );
     cutOffLfoToggleAttachment.reset( new juce::AudioProcessorValueTreeState::ButtonAttachment (valueTreeState, audioProcessor.lfoNames[ 0 ]+audioProcessor.lfoParamNames[ 0 ], cutOffLfoToggle) );
@@ -87,54 +87,62 @@ Sjf_moogLadderAudioProcessorEditor::Sjf_moogLadderAudioProcessorEditor (Sjf_moog
 //    cutOffLfoDepthSlider.setTextValueSuffix( "%" );
     cutOffLfoDepthSlider.setSliderStyle( juce::Slider::LinearBar );
     
-    
-    cutOffLfoDutySliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 0 ]+audioProcessor.lfoParamNames[ 4 ], cutOffLfoDutySlider) );
+    addAndMakeVisible( cutOffLfoOffsetSlider );
+    cutOffLfoOffsetSliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 0 ]+audioProcessor.lfoParamNames[ 4 ], cutOffLfoOffsetSlider) );
+    //    cutOffLfoDutySlider.setTextValueSuffix( "%" );
+    cutOffLfoOffsetSlider.setSliderStyle( juce::Slider::LinearBar );
+
+    cutOffLfoDutySliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 0 ]+audioProcessor.lfoParamNames[ 5 ], cutOffLfoDutySlider) );
 //    cutOffLfoDutySlider.setTextValueSuffix( "%" );
     cutOffLfoDutySlider.setSliderStyle( juce::Slider::LinearBar );
     
     
     
-    addAndMakeVisible( resonanceLFOToggle );
-    resonanceLFOToggleAttachment.reset( new juce::AudioProcessorValueTreeState::ButtonAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 0 ], resonanceLFOToggle) );
-    resonanceLFOToggle.setButtonText( "LFO " );
+    addAndMakeVisible( resonanceLfoToggle );
+    resonanceLfoToggleAttachment.reset( new juce::AudioProcessorValueTreeState::ButtonAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 0 ], resonanceLfoToggle) );
+    resonanceLfoToggle.setButtonText( "LFO " );
     
-    addAndMakeVisible( resonanceLFOType );
-    resonanceLFOType.addItem( "Sine", 1 );
-    resonanceLFOType.addItem( "Tri", 2 );
-    resonanceLFOType.addItem( "Noise1", 3 );
-    resonanceLFOType.addItem( "Noise2", 4 );
-    resonanceLFOTypeAttachment.reset( new juce::AudioProcessorValueTreeState::ComboBoxAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 1 ], resonanceLFOType) );
-    resonanceLFOType.onChange = [ this ]
+    addAndMakeVisible( resonanceLfoType );
+    resonanceLfoType.addItem( "Sine", 1 );
+    resonanceLfoType.addItem( "Tri", 2 );
+    resonanceLfoType.addItem( "Noise1", 3 );
+    resonanceLfoType.addItem( "Noise2", 4 );
+    resonanceLfoTypeAttachment.reset( new juce::AudioProcessorValueTreeState::ComboBoxAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 1 ], resonanceLfoType) );
+    resonanceLfoType.onChange = [ this ]
     {
-        if ( resonanceLFOType.getSelectedId() == 2 )
+        if ( resonanceLfoType.getSelectedId() == 2 )
         {
-            addAndMakeVisible( resonanceLFODutySlider );
-            resonanceLFODutySlider.setVisible( true );
+            addAndMakeVisible( resonanceLfoDutySlider );
+            resonanceLfoDutySlider.setVisible( true );
         }
         else
         {
-            resonanceLFODutySlider.setVisible( false );
+            resonanceLfoDutySlider.setVisible( false );
         }
     };
-    if ( resonanceLFOType.getSelectedId() == 2 )
+    if ( resonanceLfoType.getSelectedId() == 2 )
     {
-        addAndMakeVisible( resonanceLFODutySlider );
+        addAndMakeVisible( resonanceLfoDutySlider );
     }
     
-    addAndMakeVisible( resonanceLFORateSlider );
-    resonanceLFORateSliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 2 ], resonanceLFORateSlider) );
-    resonanceLFORateSlider.setTextValueSuffix( "Hz" );
-    resonanceLFORateSlider.setSliderStyle( juce::Slider::LinearBar );
+    addAndMakeVisible( resonanceLfoRateSlider );
+    resonanceLfoRateSliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 2 ], resonanceLfoRateSlider) );
+    resonanceLfoRateSlider.setTextValueSuffix( "Hz" );
+    resonanceLfoRateSlider.setSliderStyle( juce::Slider::LinearBar );
     
     addAndMakeVisible( resonanceLfoDepthSlider );
     resonanceLfoDepthSliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 3 ], resonanceLfoDepthSlider) );
 //    resonanceLfoDepthSlider.setTextValueSuffix( "%" );
     resonanceLfoDepthSlider.setSliderStyle( juce::Slider::LinearBar );
     
+    addAndMakeVisible(resonanceLfoOffsetSlider );
+    resonanceLfoOffsetSliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 4 ], resonanceLfoOffsetSlider) );
+//    resonanceLfoDutySlider.setTextValueSuffix( "%" );
+    resonanceLfoOffsetSlider.setSliderStyle( juce::Slider::LinearBar );
     
-    resonanceLFODutySliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 4 ], resonanceLFODutySlider) );
-//    resonanceLFODutySlider.setTextValueSuffix( "%" );
-    resonanceLFODutySlider.setSliderStyle( juce::Slider::LinearBar );
+    resonanceLfoDutySliderAttachment.reset( new juce::AudioProcessorValueTreeState::SliderAttachment (valueTreeState, audioProcessor.lfoNames[ 1 ]+audioProcessor.lfoParamNames[ 5 ], resonanceLfoDutySlider) );
+    //    resonanceLfoDutySlider.setTextValueSuffix( "%" );
+    resonanceLfoDutySlider.setSliderStyle( juce::Slider::LinearBar );
     
     
     setSize (400, 300);
@@ -164,17 +172,17 @@ void Sjf_moogLadderAudioProcessorEditor::resized()
     cutOffLfoType.setBounds( cutOffLfoToggle.getX(), cutOffLfoToggle.getBottom(), potSize, textHeight );
     cutOffLfoRateSlider.setBounds( cutOffLfoType.getX(), cutOffLfoType.getBottom(), potSize, textHeight );
     cutOffLfoDepthSlider.setBounds( cutOffLfoRateSlider.getX(), cutOffLfoRateSlider.getBottom(), potSize, textHeight );
-    cutOffLfoDutySlider.setBounds( cutOffLfoDepthSlider.getX(), cutOffLfoDepthSlider.getBottom(), potSize, textHeight );
-    
+    cutOffLfoOffsetSlider.setBounds( cutOffLfoDepthSlider.getX(), cutOffLfoDepthSlider.getBottom(), potSize, textHeight );
+    cutOffLfoDutySlider.setBounds( cutOffLfoOffsetSlider.getX(), cutOffLfoOffsetSlider.getBottom(), potSize, textHeight );
     
     resonanceSlider.setBounds( cutOffSlider.getRight(), cutOffSlider.getY(), potSize, potSize );
     
-    resonanceLFOToggle.setBounds( resonanceSlider.getX(), resonanceSlider.getBottom()+textHeight*0.5f, potSize, textHeight );
-    resonanceLFOType.setBounds( resonanceLFOToggle.getX(), resonanceLFOToggle.getBottom(), potSize, textHeight );
-    resonanceLFORateSlider.setBounds( resonanceLFOType.getX(), resonanceLFOType.getBottom(), potSize, textHeight );
-    resonanceLfoDepthSlider.setBounds( resonanceLFORateSlider.getX(), resonanceLFORateSlider.getBottom(), potSize, textHeight );
-    resonanceLFODutySlider.setBounds( resonanceLfoDepthSlider.getX(), resonanceLfoDepthSlider.getBottom(), potSize, textHeight );
-    
+    resonanceLfoToggle.setBounds( resonanceSlider.getX(), resonanceSlider.getBottom()+textHeight*0.5f, potSize, textHeight );
+    resonanceLfoType.setBounds( resonanceLfoToggle.getX(), resonanceLfoToggle.getBottom(), potSize, textHeight );
+    resonanceLfoRateSlider.setBounds( resonanceLfoType.getX(), resonanceLfoType.getBottom(), potSize, textHeight );
+    resonanceLfoDepthSlider.setBounds( resonanceLfoRateSlider.getX(), resonanceLfoRateSlider.getBottom(), potSize, textHeight );
+    resonanceLfoOffsetSlider.setBounds( resonanceLfoDepthSlider.getX(), resonanceLfoDepthSlider.getBottom(), potSize, textHeight );
+    resonanceLfoDutySlider.setBounds( resonanceLfoOffsetSlider.getX(), resonanceLfoOffsetSlider.getBottom(), potSize, textHeight );
     
     bassBoostSlider.setBounds( resonanceSlider.getRight(), cutOffSlider.getY(), potSize, potSize );
 }

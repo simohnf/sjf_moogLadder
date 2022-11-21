@@ -185,6 +185,12 @@ void Sjf_moogLadderAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
             m_cutOffLfoSmooth[ i ].setTargetValue( 1.0f / *cutOffLFOParameters[ i + 2 ] );
             m_resonanceLfoSmooth[ i ].setTargetValue( 1.0f / *resonanceLFOParameters[ i + 2 ] );
         }
+        else if ( i == 1 )
+        {
+            // for max width of lfo to equal 1 we just multiply by 0.5
+            m_cutOffLfoSmooth[ i ].setTargetValue( *cutOffLFOParameters[ i + 2 ] * 0.5f );
+            m_resonanceLfoSmooth[ i ].setTargetValue( *resonanceLFOParameters[ i + 2 ] * 0.5f );
+        }
         else
         {
             m_cutOffLfoSmooth[ i ].setTargetValue( *cutOffLFOParameters[ i + 2 ] );
@@ -193,17 +199,19 @@ void Sjf_moogLadderAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         
     }
     
+    
     m_lfo[ 0 ].setLFOtype( *cutOffLFOParameters[ 1 ] );
     m_lfo[ 1 ].setLFOtype( *resonanceLFOParameters[ 1 ] );
     
-    auto minCoef = sin( 40.0f * 20.0f * 3.141593 / m_SR );
-    auto maxCoef = sin( 5000.0f * 20.0f * 3.141593 / m_SR );
+    auto minCoef = sin( 40.0f * 3.141593 / m_SR );
+    auto maxCoef = sin( 5000.0f * 3.141593 / m_SR );
     
     float coef, res, bassBoost, cutOffLfoOut, resonanceLfoOut;
     for ( int s = 0; s < buffer.getNumSamples(); s++ )
     {
-        m_lfo[ 0 ].setRateChange( m_cutOffLfoSmooth [ 0 ].getNextValue() );
-        m_lfo[ 0 ].setTriangleDuty( m_cutOffLfoSmooth [ 2 ].getNextValue() );
+        m_lfo[ 0 ].setRateChange( m_cutOffLfoSmooth[ 0 ].getNextValue() );
+        m_lfo[ 0 ].setOffset( m_cutOffLfoSmooth[ 2 ].getNextValue() );
+        m_lfo[ 0 ].setTriangleDuty( m_cutOffLfoSmooth[ 3 ].getNextValue() );
         cutOffLfoOut = m_lfo [ 0 ].output();
         cutOffLfoOut *= m_cutOffLfoSmooth [ 1 ].getNextValue();
         coef = m_cutOffSmooth.getNextValue();
@@ -214,7 +222,8 @@ void Sjf_moogLadderAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         coef = fmin( fmax( coef, minCoef ), maxCoef );
         
         m_lfo[ 1 ].setRateChange( m_resonanceLfoSmooth [ 0 ].getNextValue() );
-        m_lfo[ 1 ].setTriangleDuty( m_resonanceLfoSmooth [ 2 ].getNextValue() );
+        m_lfo[ 1 ].setOffset( m_resonanceLfoSmooth [ 2 ].getNextValue() );
+        m_lfo[ 1 ].setTriangleDuty( m_resonanceLfoSmooth [ 3 ].getNextValue() );
         resonanceLfoOut = m_lfo[ 1 ].output() * m_resonanceLfoSmooth [ 1 ].getNextValue();
         res = m_resonanceSmooth.getNextValue();
         if ( *resonanceLFOParameters[ 0 ] )
@@ -288,8 +297,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout Sjf_moogLadderAudioProcessor
         params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 2 ], LfoNames[ i ]+lfoParamNames[ 2 ], 0.0001f, 20.0f, 1.0f ) );
         // depth
         params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 3 ], LfoNames[ i ]+lfoParamNames[ 3 ], 0.0f, 1.0f, 0.25f ) );
+        // offset
+        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 4 ], LfoNames[ i ]+lfoParamNames[ 4 ], -1.0f, 1.0f, 0.0f ) );
         // triangle duty cycle
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 4 ], LfoNames[ i ]+lfoParamNames[ 4 ], 0.0f, 1.0f, 0.5f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 5 ], LfoNames[ i ]+lfoParamNames[ 5 ], 0.0f, 1.0f, 0.5f ) );
     }
     
     return params;

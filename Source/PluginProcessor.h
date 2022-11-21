@@ -59,7 +59,7 @@ public:
 
     std::vector< std::string > lfoNames { "frequency_Lfo_", "resonance_Lfo_" };
     std::vector< std::string > LfoNames { "Frequency_Lfo_", "Resonance_Lfo_" };
-    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth","TriangleDutyCycle" };
+    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth", "Offset", "TriangleDutyCycle" };
     
 private:
     
@@ -74,7 +74,7 @@ private:
     float m_SR = 44100;
     
     juce::SmoothedValue< float > m_cutOffSmooth, m_resonanceSmooth, m_bassBoostSmooth;
-    std::array< juce::SmoothedValue< float >, 3 > m_cutOffLfoSmooth, m_resonanceLfoSmooth;
+    std::array< juce::SmoothedValue< float >, 4 > m_cutOffLfoSmooth, m_resonanceLfoSmooth;
     
     juce::AudioProcessorValueTreeState parameters;
     

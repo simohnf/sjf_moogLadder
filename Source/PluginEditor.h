@@ -32,15 +32,15 @@ private:
     
     juce::Slider cutOffSlider, resonanceSlider, bassBoostSlider;
     
-    juce::ToggleButton cutOffLfoToggle, resonanceLFOToggle;
-    juce::ComboBox cutOffLfoType, resonanceLFOType;
-    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoDutySlider, resonanceLFORateSlider, resonanceLfoDepthSlider, resonanceLFODutySlider;
+    juce::ToggleButton cutOffLfoToggle, resonanceLfoToggle;
+    juce::ComboBox cutOffLfoType, resonanceLfoType;
+    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoOffsetSlider, cutOffLfoDutySlider, resonanceLfoRateSlider, resonanceLfoDepthSlider, resonanceLfoOffsetSlider, resonanceLfoDutySlider;
     
     std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffSliderAttachment, resonanceSliderAttachment, bassBoostSliderAttachment;
 
-    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLFOToggleAttachment;
-    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLFOTypeAttachment;
-    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLFORateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLFODutySliderAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLfoToggleAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLfoTypeAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoOffsetSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLfoRateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLfoOffsetSliderAttachment, resonanceLfoDutySliderAttachment;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessorEditor) 
 };
