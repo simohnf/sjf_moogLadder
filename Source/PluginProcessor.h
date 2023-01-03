@@ -59,10 +59,9 @@ public:
 
     std::vector< std::string > lfoNames { "frequency_Lfo_", "resonance_Lfo_" };
     std::vector< std::string > LfoNames { "Frequency_Lfo_", "Resonance_Lfo_" };
-    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth", "Offset", "TriangleDutyCycle" };
+    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth", "Offset", "TriangleDutyCycle", "SahRate", "TempoSync", "Division" };
     
 private:
-    
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     //==============================================================================
@@ -73,8 +72,8 @@ private:
     std::array < sjf_lfo, nLFO > m_lfo;
     float m_SR = 44100;
     
-    juce::SmoothedValue< float > m_cutOffSmooth, m_resonanceSmooth, m_bassBoostSmooth;
-    std::array< juce::SmoothedValue< float >, 4 > m_cutOffLfoSmooth, m_resonanceLfoSmooth;
+    juce::SmoothedValue< float > m_cutOffSmooth, m_resonanceSmooth, m_bassBoostSmooth; // used to smooth changes to main parameters
+    std::array< juce::SmoothedValue< float >, 4 > m_cutOffLfoSmooth, m_resonanceLfoSmooth; // used to smooth changes to lfo values
     
     juce::AudioProcessorValueTreeState parameters;
     
@@ -83,6 +82,9 @@ private:
     std::atomic<float>* bassBoostParameter = nullptr;
     std::vector < std::atomic<float>* > cutOffLFOParameters;
     std::vector < std::atomic<float>* > resonanceLFOParameters;
+    
+    juce::AudioPlayHead* playHead;
+    juce::AudioPlayHead::PositionInfo positionInfo;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessor)
 };
