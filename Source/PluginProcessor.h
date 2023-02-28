@@ -59,7 +59,7 @@ public:
 
     std::vector< std::string > lfoNames { "frequency_Lfo_", "resonance_Lfo_" };
     std::vector< std::string > LfoNames { "Frequency_Lfo_", "Resonance_Lfo_" };
-    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth", "Offset", "TriangleDutyCycle", "SahRate", "TempoSync", "Division" };
+    std::vector< std::string > lfoParamNames { "On", "Type", "Rate", "Depth", "Offset", "TriangleDutyCycle", "SahRate", "TempoSync", "nBeats", "beatName", "beatType" };
     
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();

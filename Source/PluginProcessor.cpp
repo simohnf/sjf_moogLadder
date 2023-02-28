@@ -204,7 +204,7 @@ void Sjf_moogLadderAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         {
             if ( *cutOffLFOParameters[ 7 ] ) // check if cutoff lfo is synced
             {
-                m_lfo[ 0 ].setSyncDivision( *cutOffLFOParameters [ 8 ] );
+                m_lfo[ 0 ].setSyncDivision( *cutOffLFOParameters [ 8 ], *cutOffLFOParameters [ 9 ], *cutOffLFOParameters [ 10 ] );
             }
             else
             {
@@ -213,7 +213,7 @@ void Sjf_moogLadderAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
             }
             if ( *resonanceLFOParameters[ 7 ] )
             {
-                m_lfo[ 1 ].setSyncDivision( *resonanceLFOParameters[ 8 ] );
+                m_lfo[ 1 ].setSyncDivision( *resonanceLFOParameters[ 8 ], *resonanceLFOParameters[ 9 ], *resonanceLFOParameters[ 10 ] );
             }
             else
             {
@@ -348,9 +348,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout Sjf_moogLadderAudioProcessor
         // temposync
         params.add( std::make_unique<juce::AudioParameterBool>( lfoNames[ i ]+lfoParamNames[ 7 ], LfoNames[ i ]+lfoParamNames[ 7 ], false ) );
         // rate division
-        int maxDivs = sjf_lfo::syncDivisions::eightNote;
-        DBG( "syncDivisions " << maxDivs );
-        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 8 ], LfoNames[ i ]+lfoParamNames[ 8 ], 1, maxDivs, 16 ) );
+        
+        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 8 ], LfoNames[ i ]+lfoParamNames[ 8 ], 1, 16, 1 ) );
+        int nBeatNames = sjf_lfo::beatNames::sixteenthNote;
+        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 9 ], LfoNames[ i ]+lfoParamNames[ 9 ], 1, nBeatNames, 1 ) );
+        int nBeatTypes = sjf_lfo::beatTypes::septuplet; 
+        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 10 ], LfoNames[ i ]+lfoParamNames[ 10 ], 1, nBeatTypes, 1 ) );
     }
     
     return params;
