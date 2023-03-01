@@ -13,6 +13,7 @@
 #include "../../sjf_audio/sjf_LookAndFeel.h"
 #include "../../sjf_audio/sjf_Label.h"
 #include "../../sjf_audio/sjf_numBox.h"
+#include "../../sjf_audio/sjf_lfoInterface.h"
 //==============================================================================
 /**
 */
@@ -27,8 +28,6 @@ public:
     void resized() override;
 
 private:
-    void checkResonanceSyncState();
-    void checkCutoffSyncState();
     void timerCallback() override;
     
     Sjf_moogLadderAudioProcessor& audioProcessor;
@@ -37,26 +36,23 @@ private:
     sjf_lookAndFeel otherLookAndFeel;
     
     juce::Label tooltipLabel;
-    juce::String MAIN_TOOLTIP = "sjf_moogLdder: \nemulation of the Moog Ladder Filter with lfo modulation for cut off frequency and resonance";
+    juce::String MAIN_TOOLTIP = "sjf_moogLdder: \nEmulation of the Moog Ladder Filter with lfo modulation for cut off frequency and resonance";
     
-    juce::Slider cutOffSlider, resonanceSlider, bassBoostSlider;
+    juce::Slider cutoffSlider, resonanceSlider, bassBoostSlider;
     
-    sjf_numBox cutOffLFOnBeats, resonanceLFOnBeats;
     
-    juce::ToggleButton cutOffLfoToggle, resonanceLfoToggle, cutOffLfoSyncToggle, resonanceLfoSyncToggle;
-    juce::ComboBox cutOffLfoType, resonanceLfoType, /*cutOffLfoSyncDiv, resonanceLfoSyncDiv,*/ cutOffLfoBeatName, resonanceLfoBeatName, cutOffLFOBeatType, resonanceLFOBeatType;
-//    sjf_label cutOffLabel, resonanceLabel, bassBoostLabel;
-    juce::Slider cutOffLfoRateSlider, cutOffLfoDepthSlider, cutOffLfoOffsetSlider, cutOffLfoDutySlider, resonanceLfoRateSlider, resonanceLfoDepthSlider, resonanceLfoOffsetSlider, resonanceLfoDutySlider;
+    sjf_lfoInterface cutofflfoInterface, resonancelfoInterface;
+    
+    juce::ToggleButton cutofflfoToggle, resonancelfoToggle;
     
     juce::ToggleButton tooltipsToggle;
     
-    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffSliderAttachment, resonanceSliderAttachment, bassBoostSliderAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutoffSliderAttachment, resonanceSliderAttachment, bassBoostSliderAttachment;
 
-    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutOffLfoToggleAttachment, resonanceLfoToggleAttachment, cutOffLfoSyncToggleAttachment, resonanceLfoSyncToggleAttachment;
-    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutOffLfoTypeAttachment, resonanceLfoTypeAttachment, /*cutOffLfoSyncDivAttachment, resonanceLfoSyncDivAttachment*/ cutOffLfoBeatNameAttachment, resonanceLfoBeatNameAttachment, cutOffLFOBeatTypeAttachment, resonanceLFOBeatTypeAttachment;
-    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutOffLfoRateSliderAttachment, cutOffLfoDepthSliderAttachment, cutOffLfoOffsetSliderAttachment, cutOffLfoDutySliderAttachment, resonanceLfoRateSliderAttachment, resonanceLfoDepthSliderAttachment, resonanceLfoOffsetSliderAttachment, resonanceLfoDutySliderAttachment, cutOffLFOnBeatsAttachment, resonanceLFOnBeatsAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ButtonAttachment > cutofflfoToggleAttachment, resonancelfoToggleAttachment, cutofflfoSyncToggleAttachment, resonancelfoSyncToggleAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::ComboBoxAttachment > cutofflfoTypeAttachment, resonancelfoTypeAttachment, cutofflfoBeatNameAttachment, resonancelfoBeatNameAttachment, cutofflfoBeatTypeAttachment, resonancelfoBeatTypeAttachment;
+    std::unique_ptr< juce::AudioProcessorValueTreeState::SliderAttachment > cutofflfoRateSliderAttachment, cutofflfoDepthSliderAttachment, cutofflfoOffsetSliderAttachment, cutofflfoDutySliderAttachment, resonancelfoRateSliderAttachment, resonancelfoDepthSliderAttachment, resonancelfoOffsetSliderAttachment, resonancelfoDutySliderAttachment, cutofflfonBeatsAttachment, resonancelfonBeatsAttachment;
     
-//    juce::StringArray divNames;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Sjf_moogLadderAudioProcessorEditor) 
 };

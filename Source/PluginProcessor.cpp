@@ -25,7 +25,7 @@ Sjf_moogLadderAudioProcessor::Sjf_moogLadderAudioProcessor()
 {
     
     
-    cutOffParameter = parameters.getRawParameterValue("cutOff");
+    cutOffParameter = parameters.getRawParameterValue("cutoff");
     resonanceParameter = parameters.getRawParameterValue("resonance");
     bassBoostParameter = parameters.getRawParameterValue("bassBoost"); 
     
@@ -320,40 +320,42 @@ void Sjf_moogLadderAudioProcessor::setStateInformation (const void* data, int si
 //==============================================================================
 juce::AudioProcessorValueTreeState::ParameterLayout Sjf_moogLadderAudioProcessor::createParameterLayout()
 {
+    static constexpr int pIDVersionNumber = 1;
+    
     juce::AudioProcessorValueTreeState::ParameterLayout params;
     
     juce::NormalisableRange < float > cutOffRange( 40.0f, 5000.0f, 0.001f );
     cutOffRange.setSkewForCentre( 450.0f );
-    params.add( std::make_unique<juce::AudioParameterFloat>  ( "cutOff", "CutOff", cutOffRange, 100.0f ) );
-    params.add( std::make_unique<juce::AudioParameterFloat>  ( "resonance", "Resonance", 0.0f, 100.0f, 100.0f ) );
-    params.add( std::make_unique<juce::AudioParameterFloat>  ( "bassBoost", "BassBoost", 0.0f, 100.0f, 100.0f ) );
+    params.add( std::make_unique<juce::AudioParameterFloat>  ( juce::ParameterID{ "cutoff", pIDVersionNumber }, "Cutoff", cutOffRange, 100.0f ) );
+    params.add( std::make_unique<juce::AudioParameterFloat>  ( juce::ParameterID{ "resonance", pIDVersionNumber }, "Resonance", 0.0f, 100.0f, 100.0f ) );
+    params.add( std::make_unique<juce::AudioParameterFloat>  ( juce::ParameterID{ "bassBoost", pIDVersionNumber }, "BassBoost", 0.0f, 100.0f, 100.0f ) );
 
 
     for ( int i = 0; i <  nLFO; i++ )
     {
         // on / off
-        params.add( std::make_unique<juce::AudioParameterBool>( lfoNames[ i ]+lfoParamNames[ 0 ], LfoNames[ i ]+lfoParamNames[ 0 ], false ) );
+        params.add( std::make_unique<juce::AudioParameterBool>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 0 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 0 ], false ) );
         // type
-        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 1 ], LfoNames[ i ]+lfoParamNames[ 1 ], 1, 4, 1 ) );
+        params.add( std::make_unique<juce::AudioParameterInt>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 1 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 1 ], 1, 4, 1 ) );
         // rate
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 2 ], LfoNames[ i ]+lfoParamNames[ 2 ], 0.00f, 20.0f, 1.0f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 2 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 2 ], 0.00f, 20.0f, 1.0f ) );
         // depth
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 3 ], LfoNames[ i ]+lfoParamNames[ 3 ], 0.0f, 1.0f, 0.25f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 3 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 3 ], 0.0f, 1.0f, 0.25f ) );
         // offset
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 4 ], LfoNames[ i ]+lfoParamNames[ 4 ], -1.0f, 1.0f, 0.0f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 4 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 4 ], -1.0f, 1.0f, 0.0f ) );
         // triangle duty cycle
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 5 ], LfoNames[ i ]+lfoParamNames[ 5 ], 0.0f, 1.0f, 0.5f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 5 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 5 ], 0.0f, 1.0f, 0.5f ) );
         // sample and hold second rate
-        params.add( std::make_unique<juce::AudioParameterFloat>( lfoNames[ i ]+lfoParamNames[ 6 ], LfoNames[ i ]+lfoParamNames[ 6 ], 0.0f, 20.0f, 1.0f ) );
+        params.add( std::make_unique<juce::AudioParameterFloat>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 6 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 6 ], 0.0f, 20.0f, 1.0f ) );
         // temposync
-        params.add( std::make_unique<juce::AudioParameterBool>( lfoNames[ i ]+lfoParamNames[ 7 ], LfoNames[ i ]+lfoParamNames[ 7 ], false ) );
+        params.add( std::make_unique<juce::AudioParameterBool>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 7 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 7 ], false ) );
         // rate division
         
-        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 8 ], LfoNames[ i ]+lfoParamNames[ 8 ], 1, 16, 1 ) );
+        params.add( std::make_unique<juce::AudioParameterInt>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 8 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 8 ], 1, 16, 1 ) );
         int nBeatNames = sjf_lfo::beatNames::sixteenthNote;
-        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 9 ], LfoNames[ i ]+lfoParamNames[ 9 ], 1, nBeatNames, 1 ) );
+        params.add( std::make_unique<juce::AudioParameterInt>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 9 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 9 ], 1, nBeatNames, 1 ) );
         int nBeatTypes = sjf_lfo::beatTypes::septuplet; 
-        params.add( std::make_unique<juce::AudioParameterInt>( lfoNames[ i ]+lfoParamNames[ 10 ], LfoNames[ i ]+lfoParamNames[ 10 ], 1, nBeatTypes, 1 ) );
+        params.add( std::make_unique<juce::AudioParameterInt>( juce::ParameterID{ lfoNames[ i ]+lfoParamNames[ 10 ], pIDVersionNumber }, LfoNames[ i ]+lfoParamNames[ 10 ], 1, nBeatTypes, 1 ) );
     }
     
     return params;
