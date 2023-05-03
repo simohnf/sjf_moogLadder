@@ -132,10 +132,13 @@ Sjf_moogLadderAudioProcessorEditor::~Sjf_moogLadderAudioProcessorEditor()
 void Sjf_moogLadderAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-//    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-    juce::Rectangle<int> r { WIDTH, HEIGHT };
+#ifdef JUCE_DEBUG
+    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+#else
+    juce::Rectangle<int> r = { (int)( WIDTH ), (int)(HEIGHT + tooltipLabel.getHeight()) };
     sjf_makeBackground< 40 >( g, r );
-
+#endif
+    
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
     g.drawFittedText("sjf_moogLadder", 0, 0, getWidth(), textHeight, juce::Justification::centred, 1);
