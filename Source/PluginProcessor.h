@@ -9,8 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "../../sjf_audio//sjf_moogLadder.h"
-#include "../../sjf_audio//sjf_lfo.h"
+#include "../sjf_audio//sjf_moogLadder.h"
+#include "../sjf_audio//sjf_lfo.h"
 //==============================================================================
 /**
 */
